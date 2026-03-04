@@ -91,15 +91,28 @@ await connectDB();
 await connectCloudinary();
 
 // Allow multiple origins including all Vercel preview URLs
+
 const allowedOrigins = [
-  'http://localhost:5173', // local dev
-  'https://grocery-delivery-91k6.vercel.app' // production
+  'http://localhost:5173',
+  'https://grocery-delivery-91k6.vercel.app'
 ];
 
 app.use(cors({
-  origin: "https://grocery-delivery-91k6-git-main-alana-prem01s-projects.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  credentials: true // if you want to send cookies
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // allow Postman / server requests
+    if (allowedOrigins.includes(origin) || /^https:\/\/grocery-delivery-91k6-.*\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin ${origin}`), false);
+  },
+  credentials: true,
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"]
+}));
+
+// Handle preflight OPTIONS requests
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true
 }));
 
 // Middleware
