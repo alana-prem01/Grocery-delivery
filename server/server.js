@@ -96,29 +96,11 @@ const allowedOrigins = [
   'https://grocery-delivery-91k6.vercel.app' // production
 ];
 
-// Dynamic origin function
-const corsOptions = {
-  origin: function (origin, callback) {
-    // allow requests with no origin (like Postman or server-to-server)
-    if (!origin) return callback(null, true);
-
-    if (
-      allowedOrigins.includes(origin) ||
-      /^https:\/\/grocery-delivery-91k6-.*\.vercel\.app$/.test(origin)
-    ) {
-      return callback(null, true);
-    } else {
-      return callback(new Error(`CORS blocked for origin ${origin}`), false);
-    }
-  },
-  credentials: true,
-};
-
-// Apply to all routes
-app.use(cors(corsOptions));
-
-// Preflight handling for all routes dynamically
-app.options('*', cors(corsOptions));
+app.use(cors({
+  origin: "https://grocery-delivery-91k6-git-main-alana-prem01s-projects.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true // if you want to send cookies
+}));
 
 // Middleware
 app.use(express.json());
