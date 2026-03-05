@@ -33,6 +33,7 @@ export const productList = async(req,res)=>{
             return res.json({success:false ,message : error.message})
         }
 }
+
 //Get Single Product : /api/product/id
 export const productById = async(req,res)=>{
         try {
@@ -44,6 +45,7 @@ export const productById = async(req,res)=>{
             return res.json({success:false ,message : error.message})
         }
 }
+
 //Change Product inStock : /api/product/stock
 export const changeStock = async(req,res)=>{
         try {
